@@ -1,0 +1,26 @@
+
+<header>
+    <div class="container">
+        <div class="brand">
+            <div class="logo">
+                <a href="/home">
+                    <img src="../views/img/icons/online_shopping.png">
+                    <div class="logo-text">
+                        <p class="big-logo" >Grain Mill</p>
+                        <p class="small-logo" >market  & delivery</p>
+                    </div>
+                </a>
+            </div> <!-- logo -->
+
+            <div class="menu">
+                <ul>
+                    <li><a href="home">Home</a></li>
+                    <li><a href="/shop">Shop</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div> <!-- menu -->
+        </div> <!-- brand -->
+
+    </div> <!-- container -->
+</header> <!-- header -->

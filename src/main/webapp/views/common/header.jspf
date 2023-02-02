@@ -1,0 +1,119 @@
+<%@ page import="java.sql.Statement" %>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.ResultSet" %>
+<%@ page import="java.sql.DriverManager" %>
+<%@ page import="com.jtspringproject.JtSpringProject.controller.AdminController" %>
+    <header>
+        <div class="container">
+            <div class="brand">
+                <div class="logo">
+                    <a href="home">
+                        <img src="../views/img/icons/online_shopping.png" alt="">
+                        <div class="logo-text">
+                            <p class="big-logo">Grain Mill</p>
+                            <p class="small-logo">market&delivery </p>
+                        </div>
+                    </a>
+                </div> <!-- logo -->
+                <div class="shop-icon">
+                    <div class="dropdown">
+                        <a href="account"><img src="../views/img/icons/account.png"></a>
+                        <div class="dropdown-menu">
+                            <ul>
+                                <li><a href="account">My Account</a></li>
+                                <li><a href="myOrders">My Orders</a></li>
+                                <li><a href="logout">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <img src="../views/img/icons/heart.png">
+                        <div class="dropdown-menu wishlist-item">
+                            <table border="1">
+                                <thead>
+                                <tr>
+                                    <th colspan="2">Top Categories</th>
+<%--                                    <th>Product Name</th>--%>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><img src="../views/img/product/img1.jpg"></td>
+                                    <td>Grains</td>
+                                </tr>
+                                <tr>
+                                    <td><img src="../views/img/product/img15.jpg"></td>
+                                    <td>Flours</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a href="cart"><img src="../views/img/icons/shopping_cart.png"></a>
+                        <div class="dropdown-menu cart-item">
+                            <table border="1">
+                                <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Product Name</th>
+                                    <th class="center">Price</th>
+                                    <th class="center">Qty.</th>
+                                    <th class="center">Amount</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <%
+                                    try {
+                                        String url = "jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway";
+                                        Class.forName("com.mysql.cj.jdbc.Driver");
+                                        Connection con = DriverManager.getConnection(url, "root","LK0nTR9wwyRwBq6qflc0");
+                                        Statement stmt = con.createStatement();
+                                        Statement stmt2 = con.createStatement();
+                                        ResultSet rs = stmt.executeQuery(" select * from cart join products on products.id = cart.productId join categories c on c.category_id = products.category_id where cart.userId =" + AdminController.currentUser.getId());
+
+                                %>
+                                <%
+                                    while (rs.next()){
+                                %>
+                                <tr>
+                                    <td><a href="product?pid=<%= rs.getInt(3)%>"><img src="../views/img/product/img<%= rs.getString(3) %>.jpg" alt=""></a> </td>
+                                    <td><%=rs.getString(6)%></td>
+                                    <td class="center"><%= rs.getInt(7)%></td>
+                                    <td class="center"><%= rs.getInt(4)%></td>
+                                    <td class="center"><%= rs.getInt(7)* rs.getInt(4) %></td>
+                                    <td><a href="cart/remove?cid=<%= rs.getInt(1) %>" >x</a></td>
+                                </tr>
+                                <%}%>
+                                <%
+                                    } catch (Exception ex) {
+                                        System.out.println("Exception Occurred:: " + ex.getMessage());
+                                    }
+                                %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div> <!-- shop icons -->
+            </div> <!-- brand -->
+
+            <div class="menu-bar">
+                <div class="menu">
+                    <ul>
+                        <li><a href="home">Home</a></li>
+                        <li><a href="shop">Shop</a></li>
+                        <li><a href="about">About</a></li>
+                        <li><a href="contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="search-bar">
+                    <form action="search" method="get">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="val" placeholder="Search" >
+                            <button type="submit" class="btn btn-primary"><img src="../views/img/icons/search.png"></button>
+                        </div>
+                    </form>
+                </div>
+            </div> <!-- menu -->
+        </div> <!-- container -->
+    </header> <!-- header -->

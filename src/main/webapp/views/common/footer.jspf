@@ -1,0 +1,70 @@
+
+<footer>
+    <div class="container">
+        <div class="footer-widget">
+            <div class="widget">
+                <div class="widget-heading">
+                    <h3>Important Link</h3>
+                </div>
+                <div class="widget-content">
+                    <ul>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="/refund">Refund Policy</a></li>
+                        <li><a href="/terms">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="widget">
+                <div class="widget-heading">
+                    <h3>Information</h3>
+                </div>
+                <div class="widget-content">
+                    <ul>
+                        <li><a href="/account">My Account</a></li>
+                        <li><a href="/myOrders">My Orders</a></li>
+                        <li><a href="/cart">Cart</a></li>
+                        <li><a href="/checkout">Checkout</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="widget">
+                <div class="widget-heading">
+                    <h3>Follow us</h3>
+                </div>
+                <div class="widget-content">
+                    <div class="follow">
+                        <ul>
+                            <li><a href="#"><img src="../views/img/icons/facebook.png"></a></li>
+                            <li><a href="#"><img src="../views/img/icons/twitter.png"></a></li>
+                            <li><a href="#"><img src="../views/img/icons/instagram.png"></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="widget-heading">
+                    <h3>Subscribe for Newsletter</h3>
+                </div>
+                <div class="widget-content">
+                    <div class="subscribe">
+                        <form>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="subscribe" placeholder="Email">
+                                <img src="../views/img/icons/paper_plane.png">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- Footer Widget -->
+        <div class="footer-bar">
+            <div class="copyright-text">
+                <p>Copyright 2023 - All Rights Reserved</p>
+            </div>
+            <div class="payment-mode">
+                <img src="../views/img/icons/paper_money.png" alt="">
+                <img src="../views/img/icons/visa.png" alt="">
+                <img src="../views/img/icons/mastercard.png" alt="">
+            </div>
+        </div> <!-- Footer Bar -->
+    </div>
+</footer> <!-- Footer Area -->

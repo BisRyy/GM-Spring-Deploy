@@ -1,0 +1,55 @@
+package com.jtspringproject.JtSpringProject.objects;
+
+import com.jtspringproject.JtSpringProject.controller.Buyer;
+
+import java.util.Scanner;
+
+public class MainMenu {
+    private static final Scanner scanner = new Scanner(System.in);
+    static Buyer buyer;
+    static Seller seller;
+
+    static void menu() {
+        int userType = WelcomeMenu.userType();
+        int menuChoice = AccountMenu.menuChoice(userType);
+
+        if (menuChoice == 1) {
+            userLogin(userType);
+            mainMenu(userType);
+        } else if (menuChoice == 2) {
+            SignUp signUp = new SignUp();
+            signUp.createAccount(userType);
+        } else if (menuChoice == 0) {
+            System.exit(0);
+        } else {
+            System.out.println("Invalid choice");
+        }
+
+    }
+
+    private static void mainMenu(int userType) {
+        if (userType == 1){
+            BuyerMenu buyerMenu = new BuyerMenu();
+            buyerMenu.buyerMenu(buyer);
+        }
+        else if (userType == 2){
+            SellerMenu sellerMenu = new SellerMenu();
+            sellerMenu.sellerMenu(seller);
+        }
+        else {
+            AdminMenu adminMenu = new AdminMenu();
+            adminMenu.adminMenu();
+        }
+    }
+
+    private static void userLogin(int userType) {
+        if(userType == 1){
+            BuyerLogIn buyerLogIn = new BuyerLogIn();
+            buyer = buyerLogIn.logIn();
+        } else if(userType == 2){
+            SellerLogIn sellerLogIn = new SellerLogIn();
+            seller = sellerLogIn.logIn();
+        }
+        System.out.println(">> Login Successful!");
+    }
+}

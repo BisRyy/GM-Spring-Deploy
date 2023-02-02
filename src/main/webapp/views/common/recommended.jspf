@@ -1,0 +1,48 @@
+
+<div class="new-product-section">
+    <div class="product-section-heading">
+        <h2>Recommend Products <img src="../views/img/icons/good_quality.png"></h2>
+        <h3>OUR BEST PRODUCTS RECOMMENDED FOR YOU</h3>
+    </div>
+    <div class="product-content">
+        <%
+            try {
+                String url = "jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway";
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                Connection con = DriverManager.getConnection(url, "root","LK0nTR9wwyRwBq6qflc0");
+                Statement stmt = con.createStatement();
+                Statement stmt2 = con.createStatement();
+                ResultSet rs = stmt.executeQuery("select * from products join categories c on c.category_id = products.category_id order by price");
+        %>
+        <%
+            for (int i=0; i < 4; i++) {
+                rs.next();
+        %>
+        <div class="product">
+            <a href="product?pid=<%= rs.getInt(1) %>">
+                <img src="../views/img/product/img<%= rs.getString(1) %>.jpg">
+            </a>
+            <div class="product-detail">
+                <h3>
+                    <%= rs.getString(11) %>
+                </h3>
+                <h2>
+                    <%= rs.getString(2) %>
+                </h2>
+                <a href="cart/add?pid=<%= rs.getString(1) %>&qty=10">Add to Cart</a>
+                <p>
+                    <%= rs.getInt(3) %> Birr.
+                </p>
+            </div>
+        </div>
+        <%
+            }
+        %>
+    </div>
+    <%
+        } catch (Exception ex) {
+            out.println("Exception Occurred:: " + ex.getMessage());
+        }
+    %>
+</div>
+</div> <!-- Recommend Product Section -->
