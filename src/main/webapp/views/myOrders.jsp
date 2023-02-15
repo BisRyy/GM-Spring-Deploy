@@ -4,10 +4,9 @@
 <head>
     <!-- Meta Tags -->
     <meta charset="UTF-8">
-    <meta name="author" content="Kamran Mubarik">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Title -->
-    <title>E-Commerce Online Shop</title>
+    <title>My Orders - GM</title>
     <!-- Style Sheet -->
     <link rel="stylesheet" type="text/css" href="../views/css/style.css" />
     <!-- Javascript -->
@@ -31,9 +30,9 @@
 
 <%
     try {
-        String url = "jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway";
+        String url = DBConnection;
         Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection con = DriverManager.getConnection(url, "root","LK0nTR9wwyRwBq6qflc0");
+        Connection con = DriverManager.getConnection(url, DBUser,DBPass);
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("select id, date , price, status, pmode from `order` join users on order.userId = users.user_id where users.user_id = " + AdminController.currentUser.getId());
 
@@ -63,14 +62,13 @@
                             <th>Amount</th>
                             <th>Payment Mode</th>
                             <th>Status</th>
-                            <th>View</th>
                         </tr>
                         </thead>
                         <tbody>
                         <% while (rs.next()) {%>
                         <tr>
                             <td><%= rs.getString(2)%></td>
-                            <td>61245231<%= rs.getInt(1)%></td>
+                            <td>61231<%= rs.getInt(1)%></td>
                             <td><%= rs.getInt(3)%>.00 Birr</td>
 
                             <% if(rs.getInt(5) == 1){%>
@@ -81,14 +79,16 @@
                             <td>Bank</td>
                             <%}%>
 
-                                <% if(rs.getInt(4) == 0){%>
-                                    <td>pending</td>
+                            <% if(rs.getInt(4) == 0){%>
+                                <td>pending...</td>
+                            <% }else if(rs.getInt(4) == 2){%>
+                            <td>Cancelled</td>
                             <%}else{%>
-                            <td>delivered</td>
+                            <td>Completed</td>
                             <%}%>
-
-                            </td>
-                            <td><a href="#">View</a></td>
+                            <% if(rs.getInt(4) == 0){%>
+                            <td><a href="orders/update?type=3&oid=<%= rs.getInt(1) %>">Cancel</a></td>
+                            <%}%>
                         </tr>
                         <%}%>
                         </tbody>

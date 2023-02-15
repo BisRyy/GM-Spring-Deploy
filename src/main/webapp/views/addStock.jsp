@@ -44,9 +44,9 @@
                                 <option value="0">---Select a Product---</option>
                                 <%
                                     try {
-                                        String url = "jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway";
+                                        String url = DBConnection;
                                         Class.forName("com.mysql.cj.jdbc.Driver");
-                                        Connection con = DriverManager.getConnection(url, "root","LK0nTR9wwyRwBq6qflc0");
+                                        Connection con = DriverManager.getConnection(url, DBUser,DBPass);
                                         Statement stmt = con.createStatement();
                                         ResultSet rs = stmt.executeQuery("select * from products");
                                         while (rs.next()) {
@@ -78,18 +78,16 @@
                         <th>ID</th>
                         <th>Product Name</th>
                         <th>Category</th>
-                        <th>Stock in</th>
-                        <th>Stock Out</th>
-                        <th>Available</th>
+                        <th>Available Stock</th>
                     </tr>
                     </thead>
                     <tbody>
 
                     <%
                         try {
-                            String url = "jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway";
+                            String url = DBConnection;
                             Class.forName("com.mysql.cj.jdbc.Driver");
-                            Connection con = DriverManager.getConnection(url, "root","LK0nTR9wwyRwBq6qflc0");
+                            Connection con = DriverManager.getConnection(url, DBUser,DBPass);
                             Statement stmt = con.createStatement();
                             ResultSet rs = stmt.executeQuery("select * from products join categories c on c.category_id = products.category_id");
                             while (rs.next()) {
@@ -99,9 +97,7 @@
                         <td><%= rs.getInt(1)%></td>
                         <td><%= rs.getString(2)%></td>
                         <td><%= rs.getString(11)%></td>
-                        <td><%= rs.getString(6)%></td>
-                        <td><%= rs.getInt(6) - rs.getInt(6) %></td>
-                        <td><%= rs.getString(6)%></td>
+                        <td><%= rs.getString(6)%> Kg</td>
                     </tr>
                     <%}
                     } catch (Exception e) {

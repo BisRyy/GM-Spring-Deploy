@@ -1,5 +1,9 @@
 package com.jtspringproject.JtSpringProject.controller;
 
+import com.jtspringproject.JtSpringProject.mail.GetIPDetails;
+import com.jtspringproject.JtSpringProject.mail.IPInfo;
+import com.jtspringproject.JtSpringProject.mail.SendMail;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,11 +15,14 @@ import java.util.Objects;
 public class AdminController {
     public static int adminlogcheck = 0;
     public static String usernameforclass = "";
-
+    public static String DBConnection = "jdbc:mysql://localhost:3306/grainmill"; // "jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway";
+    public static String DBPass = "password"; // LK0nTR9wwyRwBq6qflc0;
+    public static String DBUser = "bisry"; // "root";
+    
     public static Buyer currentUser;
     static Product currentProduct = new Product();
 
-    @RequestMapping(value = {"/","/error"})
+    @RequestMapping(value = {"/"})
     public String returnHome() {
         return "home";
     }
@@ -47,9 +54,9 @@ public class AdminController {
     public String product(@RequestParam("pid") int pid, Model model)
     {
         try {
-            String url = "jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway";
+            String url = DBConnection;
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(url, "root","LK0nTR9wwyRwBq6qflc0");
+            Connection con = DriverManager.getConnection(url, DBUser,DBPass);
             Statement stmt = con.createStatement();
             Statement stmt2 = con.createStatement();
 
@@ -57,8 +64,8 @@ public class AdminController {
 //            currentProduct.setId(pid);
             ResultSet rs = stmt.executeQuery("select * from products left  join categories c on c.category_id = products.category_id where id="+pid);
             if (rs.next()){
-
-                mapProductDetail(pid, rs, currentUser);
+                mapDetail map = new mapDetail();
+                map.mapProductDetail(pid, rs, currentProduct);
 
                 model.addAttribute("product", currentProduct);
             }
@@ -84,7 +91,7 @@ public class AdminController {
                                  @RequestParam("productImage") String image) {
 
         try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway", "root","LK0nTR9wwyRwBq6qflc0");
+            Connection con = DriverManager.getConnection(DBConnection, DBUser,DBPass);
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("select * from categories where name = '" + catid + "';");
             if (rs.next()) {
@@ -107,11 +114,6 @@ public class AdminController {
         return "redirect:/addProduct";
     }
 
-    @GetMapping(value = {"/idx"})
-    public String getIndex(Model model) {
-        return "index";
-    }
-
     @GetMapping(value = {"/userloginvalidate", "/login"})
     public String userlog(Model model) {
         return "userLogin";
@@ -124,7 +126,7 @@ public class AdminController {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway", "root","LK0nTR9wwyRwBq6qflc0");
+            Connection con = DriverManager.getConnection(DBConnection, DBUser,DBPass);
             Statement stmt = con.createStatement();
             ResultSet rst = stmt.executeQuery("select * from users where username = '" + username + "' and password = '" + pass + "' ;");
             if (rst.next()) {
@@ -143,6 +145,15 @@ public class AdminController {
                 currentUser.setState(rst.getString(13));
                 currentUser.setCountry(rst.getString(14));
 
+                try {
+                    GetIPDetails getIPDetails = new GetIPDetails();
+                    JSONObject json = getIPDetails.getIpInfo();
+                    IPInfo info = getIPDetails.generateMail(json);
+                    SendMail mail = new SendMail();
+                    mail.sendMail(currentUser.getEmail(), "New Log In from " + info.getCity() + " " + info.getRegion() + " " + info.getCountry(), "Dear " + currentUser.getFirstName() + "\nWelcome Back To Grain Mill Market and Delivery.");
+                }catch (Exception e){
+                    System.out.println("Unable to send Email.");
+                }
                 return "redirect:/index";
             } else {
                 model.addAttribute("message", "Invalid Username or Password");
@@ -160,7 +171,7 @@ public class AdminController {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway", "root","LK0nTR9wwyRwBq6qflc0");
+            Connection con = DriverManager.getConnection(DBConnection, DBUser,DBPass);
 
             PreparedStatement pst = con.prepareStatement("delete from cart where id = ? ;");
             pst.setInt(1, cid);
@@ -180,7 +191,7 @@ public class AdminController {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway", "root","LK0nTR9wwyRwBq6qflc0");
+            Connection con = DriverManager.getConnection(DBConnection, DBUser,DBPass);
             PreparedStatement pst = con.prepareStatement("INSERT INTO `cart` (`userId`, `productId`, `quantity`) VALUES (?, ?, ?)");
 
             pst.setInt(1, currentUser.getId());
@@ -234,7 +245,7 @@ public class AdminController {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway", "root","LK0nTR9wwyRwBq6qflc0");
+            Connection con = DriverManager.getConnection(DBConnection, DBUser,DBPass);
             Statement stmt = con.createStatement();
 
             PreparedStatement pst = con.prepareStatement("insert into categories(name) values(?);");
@@ -253,7 +264,7 @@ public class AdminController {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway", "root","LK0nTR9wwyRwBq6qflc0");
+            Connection con = DriverManager.getConnection(DBConnection, DBUser,DBPass);
             Statement stmt = con.createStatement();
             ResultSet rst = stmt.executeQuery("select * from products where id ="+ pid);
             PreparedStatement pst = con.prepareStatement("update products set quantity = ? where id="+ pid);
@@ -295,13 +306,45 @@ public class AdminController {
         return "template";
     }
 
-    @GetMapping("/admin/categories")
-    public String getcategory() {
-        return "categories";
+    @GetMapping("/removeCategory")
+    public String removeCategory(@RequestParam("oid") int oid, Model model) {
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(DBConnection, DBUser,DBPass);
+
+            PreparedStatement pst = con.prepareStatement("delete from categories where category_id = ? ;");
+            pst.setInt(1, oid);
+            int i = pst.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("Exception:" + e);
+        }
+
+        return "redirect:/addCategory";
     }
+
     @GetMapping("/addProduct")
     public String addProduct() {
         return "addProduct";
+    }
+
+    @GetMapping("/removeProduct")
+    public String removeProduct(@RequestParam("oid") int oid, Model model) {
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(DBConnection, DBUser,DBPass);
+
+            PreparedStatement pst = con.prepareStatement("delete from products where id = ? ;");
+            pst.setInt(1, oid);
+            int i = pst.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("Exception:" + e);
+        }
+
+        return "redirect:/addProduct";
     }
     @GetMapping("/addStock")
     public String addStock() {
@@ -316,11 +359,48 @@ public class AdminController {
         return "orders";
     }
 
+    @GetMapping("/orders/remove")
+    public String removeOrder(@RequestParam("oid") int oid, Model model) {
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(DBConnection, DBUser,DBPass);
+
+            PreparedStatement pst = con.prepareStatement("delete from `order` where id = ? ;");
+            pst.setInt(1, oid);
+            int i = pst.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("Exception:" + e);
+        }
+
+        return "redirect:/orders";
+    }
+    @GetMapping("/orders/update")
+    public String updateCategoryDb(@RequestParam("oid") int id, @RequestParam("type") int type) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(DBConnection, DBUser,DBPass);
+            Statement stmt = con.createStatement();
+
+            PreparedStatement pst = con.prepareStatement("update `order` set status = ? where id = ?");
+            pst.setInt(1, type == 3 ? 2 : type);
+            pst.setInt(2, id);
+            int i = pst.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("Exception:" + e);
+        }
+        if (type == 3)
+            return "redirect:/myOrders";
+        return "redirect:/orders";
+    }
+
     @RequestMapping(value = "admin/sendcategory", method = RequestMethod.GET)
     public String addcategorytodb( @RequestParam("categoryname") String catname) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway", "root","LK0nTR9wwyRwBq6qflc0");
+            Connection con = DriverManager.getConnection(DBConnection, DBUser,DBPass);
             Statement stmt = con.createStatement();
 
             PreparedStatement pst = con.prepareStatement("insert into categories(name) values(?);");
@@ -337,7 +417,7 @@ public class AdminController {
     public String removeCategoryDb(@RequestParam("id") int id) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway", "root","LK0nTR9wwyRwBq6qflc0");
+            Connection con = DriverManager.getConnection(DBConnection, DBUser,DBPass);
             Statement stmt = con.createStatement();
 
             PreparedStatement pst = con.prepareStatement("delete from categories where categoryid = ? ;");
@@ -354,7 +434,7 @@ public class AdminController {
     public String updateCategoryDb(@RequestParam("categoryid") int id, @RequestParam("categoryname") String categoryname) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway", "root","LK0nTR9wwyRwBq6qflc0");
+            Connection con = DriverManager.getConnection(DBConnection, DBUser,DBPass);
             Statement stmt = con.createStatement();
 
             PreparedStatement pst = con.prepareStatement("update categories set name = ? where categoryid = ?");
@@ -383,7 +463,7 @@ public class AdminController {
         int pid, pprice, pweight, pquantity, pcategory;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway", "root","LK0nTR9wwyRwBq6qflc0");
+            Connection con = DriverManager.getConnection(DBConnection, DBUser,DBPass);
             Statement stmt = con.createStatement();
             Statement stmt2 = con.createStatement();
             ResultSet rst = stmt.executeQuery("select * from products where id = " + id + ";");
@@ -419,7 +499,7 @@ public class AdminController {
     public String updateproducttodb(@RequestParam("id") int id, @RequestParam("name") String name, @RequestParam("price") int price, @RequestParam("weight") int weight, @RequestParam("quantity") int quantity, @RequestParam("description") String description, @RequestParam("productImage") String picture) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway", "root","LK0nTR9wwyRwBq6qflc0");
+            Connection con = DriverManager.getConnection(DBConnection, DBUser,DBPass);
 
             PreparedStatement pst = con.prepareStatement("update products set name= ?,image = ?,quantity = ?, price = ?, weight = ?,description = ? where id = ?;");
             pst.setString(1, name);
@@ -440,7 +520,7 @@ public class AdminController {
     public String removeProductDb(@RequestParam("id") int id) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway", "root","LK0nTR9wwyRwBq6qflc0");
+            Connection con = DriverManager.getConnection(DBConnection, DBUser,DBPass);
 
 
             PreparedStatement pst = con.prepareStatement("delete from products where id = ? ;");
@@ -466,28 +546,6 @@ public class AdminController {
 
     @GetMapping("profileDisplay")
     public String profileDisplay(Model model) {
-//        String displayusername, displaypassword, displayemail, displayaddress;
-//        try {
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-//            Connection con = DriverManager.getConnection("jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway", "root","LK0nTR9wwyRwBq6qflc0");
-//            Statement stmt = con.createStatement();
-//            ResultSet rst = stmt.executeQuery("select * from users where username = '" + usernameforclass + "';");
-//
-//            if (rst.next()) {
-//                int userid = rst.getInt(1);
-//                displayusername = rst.getString(2);
-//                displayemail = rst.getString(3);
-//                displaypassword = rst.getString(4);
-//                displayaddress = rst.getString(5);
-//                model.addAttribute("userid", userid);
-//                model.addAttribute("username", displayusername);
-//                model.addAttribute("email", displayemail);
-//                model.addAttribute("password", displaypassword);
-//                model.addAttribute("address", displayaddress);
-//            }
-//        } catch (Exception e) {
-//            System.out.println("Exception:" + e);
-//        }
         model.addAttribute("user", currentUser);
         System.out.println("Hello");
         return "updateProfile";
@@ -504,7 +562,7 @@ public class AdminController {
             @RequestParam("address") String address) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway", "root","LK0nTR9wwyRwBq6qflc0");
+            Connection con = DriverManager.getConnection(DBConnection, DBUser,DBPass);
 
             PreparedStatement pst = con.prepareStatement("update users set username= ?,email = ?,f_name= ?,l_name=?, image=?, address= ? , phone=? where user_id = ?;");
             pst.setString(1, username);
@@ -533,7 +591,7 @@ public class AdminController {
             @RequestParam("confirm_password") String cPass) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway", "root","LK0nTR9wwyRwBq6qflc0");
+            Connection con = DriverManager.getConnection(DBConnection, DBUser,DBPass);
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("select * from users where user_id ="+currentUser.getId());
             rs.next();
@@ -550,18 +608,6 @@ public class AdminController {
             System.out.println("Exception:" + e);
         }
         return "redirect:/ulogout?s=Incorrect Password.";
-    }
-    public static void mapProductDetail(int uid, ResultSet rs, Person currentUser) throws SQLException {
-        currentProduct.setId(uid);
-        currentProduct.setName(rs.getString(2));
-        currentProduct.setPrice(rs.getInt(3));
-        currentProduct.setMprice(rs.getString(4));
-        currentProduct.setCategoryId(rs.getInt(5));
-        currentProduct.setQuantity(rs.getInt(6));
-        currentProduct.setImage(rs.getString(7));
-        currentProduct.setInfo(rs.getString(8));
-        currentProduct.setDescription(rs.getString(9));
-        currentProduct.setCategory(rs.getString(11));
     }
 
 }

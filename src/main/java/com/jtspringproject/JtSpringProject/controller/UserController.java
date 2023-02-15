@@ -4,15 +4,27 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
+import com.jtspringproject.JtSpringProject.mail.GetIPDetails;
+import com.jtspringproject.JtSpringProject.mail.IPInfo;
+import com.jtspringproject.JtSpringProject.mail.SendMail;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 
 import static com.jtspringproject.JtSpringProject.controller.AdminController.currentUser;
 
 @Controller
 public class UserController {
 //	Buyer currentUser = new Buyer();
+
+	private final String DBConnection = "jdbc:mysql://localhost:3306/grainmill"; // "jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway";
+	private final String DBPass = "password"; // LK0nTR9wwyRwBq6qflc0;
+	private final String DBUser = "bisry"; // "root";
 
 	@RequestMapping(value = "newuserregister", method = RequestMethod.POST)
 	public String newUseRegister(@RequestParam("username") String username,
@@ -21,7 +33,7 @@ public class UserController {
 								 @RequestParam("password") String password,
 								 @RequestParam("email") String email) {
 		try {
-			Connection con = DriverManager.getConnection("jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway", "root","LK0nTR9wwyRwBq6qflc0");
+			Connection con = DriverManager.getConnection(DBConnection, DBUser,DBPass);
 			PreparedStatement pst = con.prepareStatement("insert into users(username, f_name, l_name ,password,email) values(?,?,?,?,?);");
 			pst.setString(1, username);
 			pst.setString(2, f_name);
@@ -39,9 +51,18 @@ public class UserController {
 			int i = pst.executeUpdate();
 			System.out.println("data base updated" + i);
 
+			try {
+				GetIPDetails getIPDetails = new GetIPDetails();
+				JSONObject json = getIPDetails.getIpInfo();
+				IPInfo info = getIPDetails.generateMail(json);
+				SendMail mail = new SendMail();
+				mail.sendMail(currentUser.getEmail(), "Registration Successful.", "Dear " + currentUser.getFirstName() + "\nWelcome To Grain Mill Market and Delivery.");
+			}catch (Exception e){
+				System.out.println("Email Sending Failed");
+			}
 		} catch (Exception e) {
 			String str1 = e.toString();
-			String check = "Access denied for user 'bisry'@'localhost' (using password: NO)";
+			String check = "Access denied";
 			if (str1.contains(check)) {
 				return "redirect:/";
 			}
@@ -174,7 +195,7 @@ public class UserController {
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway", "root","LK0nTR9wwyRwBq6qflc0");
+			Connection con = DriverManager.getConnection(DBConnection, DBUser,DBPass);
 			PreparedStatement pst = con.prepareStatement("INSERT INTO `order` (`userId`, `items`, `price`, `pmode`,`status`) VALUES (?, ?, ?,?,?)");
 			PreparedStatement pst1 = con.prepareStatement("DELETE FROM `cart` where userId=?");
 			pst1.setInt(1, currentUser.getId());
@@ -186,6 +207,20 @@ public class UserController {
 			pst.setInt(5, 0);
 			int i = pst.executeUpdate();
 			int j = pst1.executeUpdate();
+
+			try {
+				GetIPDetails getIPDetails = new GetIPDetails();
+				JSONObject json = getIPDetails.getIpInfo();
+				IPInfo info = getIPDetails.generateMail(json);
+				SendMail mail = new SendMail();
+				mail.sendMail(currentUser.getEmail(), "New Order from " + info.getCity() + " " +
+						info.getRegion() + " " + info.getCountry(), "Dear " + currentUser.getFirstName() +
+						"\nA new Order has Successfully been Added to your Account. \n" + items +
+						" products \n Total Cost: " + price + "\n\n\n Your Order Will be delivered in two days. \n\n Happy to serve you.");
+
+			}catch (Exception x){
+				System.out.println("Unable to send Email");
+			}
 
 		} catch (Exception e) {
 			System.out.println("Exception:" + e);

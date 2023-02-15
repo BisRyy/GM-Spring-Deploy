@@ -1,3 +1,4 @@
+<%@ page import="static com.jtspringproject.JtSpringProject.controller.AdminController.*" %>
 
 <header>
     <div class="container">

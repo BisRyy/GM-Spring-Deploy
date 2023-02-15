@@ -1,4 +1,5 @@
 <%@ page import="java.sql.*" %>
+<%@ page import="static com.jtspringproject.JtSpringProject.controller.AdminController.*" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,18 +44,31 @@
 							<th>Qty</th>
 						</tr>
 						</thead>
+						<%
+							try {
+								String url = DBConnection;
+								Class.forName("com.mysql.cj.jdbc.Driver");
+								Connection con = DriverManager.getConnection(url, DBUser,DBPass);
+								Statement stmt = con.createStatement();
+								ResultSet rs = stmt.executeQuery("select * from products join categories c on c.category_id = products.category_id order by quantity");
+						%>
 						<tbody>
-<%--						<% while (rs1.next()) {%>--%>
-<%--						<tr>--%>
-<%--							<td><%= rs1.getString(2)%></td>--%>
-<%--							<td>61245231<%= rs1.getInt(1)%></td>--%>
-<%--							<td><%= rs1.getString(6)%></td>--%>
-<%--							<td><%= rs1.getInt(3)%>.00 Birr</td>--%>
+						<% for (int i =0; i < 5; i++) { rs.next(); %>
+						<tr>
+							<td><%= rs.getString(2)%></td>
+							<td><%= rs.getInt(3)%>.00 Birr</td>
+							<td><%= rs.getString(11)%></td>
+							<td><%= rs.getString(6)%></td>
 
-<%--							<td><a href="#">View</a></td>--%>
-<%--						</tr>--%>
-<%--						<%}%>--%>
+							<td><a href="addProduct">View</a></td>
+						</tr>
+						<%}%>
 						</tbody>
+						<%
+							} catch (Exception e) {
+								System.out.println("Exception: " + e);
+							}
+						%>
 					</table>
 					<br><br>
 					<h4>Recent Orders</h4>
@@ -70,9 +84,9 @@
 						</thead>
 						<%
 							try {
-								String url = "jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway";
+								String url = DBConnection;
 								Class.forName("com.mysql.cj.jdbc.Driver");
-								Connection con = DriverManager.getConnection(url, "root","LK0nTR9wwyRwBq6qflc0");
+								Connection con = DriverManager.getConnection(url, DBUser,DBPass);
 								Statement stmt = con.createStatement();
 								ResultSet rs = stmt.executeQuery("select id, date , price, status, pmode, username from `order` join users on order.userId = users.user_id ");
 						%>
@@ -104,16 +118,16 @@
 							<th>Order Ref#</th>
 							<th>User</th>
 							<th>Amount</th>
-							<th>View</th>
+<%--							<th>View</th>--%>
 						</tr>
 						</thead>
 						<%
 							try {
-								String url = "jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway";
+								String url = DBConnection;
 								Class.forName("com.mysql.cj.jdbc.Driver");
-								Connection con = DriverManager.getConnection(url, "root","LK0nTR9wwyRwBq6qflc0");
+								Connection con = DriverManager.getConnection(url, DBUser,DBPass);
 								Statement stmt = con.createStatement();
-								ResultSet rs = stmt.executeQuery("select id, date , price, status, pmode, username from `order` join users on order.userId = users.user_id where status = 1 ");
+								ResultSet rs = stmt.executeQuery("select id, date , price, status, pmode, username from `order` join users on order.userId = users.user_id where status = 1 order by date desc ");
 						%>
 
 						<tbody>
@@ -124,7 +138,7 @@
 							<td><%= rs.getString(6)%></td>
 							<td><%= rs.getInt(3)%>.00 Birr</td>
 
-							<td><a href="#">View</a></td>
+							<td><a href="orders">View</a></td>
 						</tr>
 						<%}%>
 						</tbody>
@@ -145,7 +159,7 @@
 	<div class="container">
 		<div class="footer-bar">
 			<div class="copyright-text">
-				<p>Copryright 2020 - All Rights Reserved</p>
+				<p>Copryright 2023 - All Rights Reserved</p>
 			</div>
 		</div> <!-- Footer Bar -->
 	</div>

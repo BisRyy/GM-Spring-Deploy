@@ -1,4 +1,4 @@
-/* Variriables */
+/* Variables */
 :root{
 	--khaki: #F0E68C;
 	--khakiDark: #BDB76B;
@@ -323,7 +323,7 @@ main .collection{
 	justify-content: space-around;
 	align-items: center;
 }
-main .collection .men-collection{
+main .collection .grain-collection{
 	width: 49%;
 	height: 200px;
 	background: gray url(../img/gallery/3.jpg) no-repeat;
@@ -333,7 +333,7 @@ main .collection .men-collection{
 	line-height: 36px;
 	padding: 20px 40px;
 }
-main .collection .women-collection{
+main .collection .rice-collection{
 	width: 49%;
 	height: 200px;
 	background: gray url(../img/gallery/1.jpg) no-repeat;
@@ -343,8 +343,8 @@ main .collection .women-collection{
 	line-height: 36px;
 	padding: 20px 40px;
 }
-main .collection .men-collection h2,
-main .collection .women-collection h2{
+main .collection .grain-collection h2,
+main .collection .rice-collection h2{
 	width: 200px;
 	font-size: 24px;
 	color: var(--white);

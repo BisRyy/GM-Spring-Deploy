@@ -50,9 +50,9 @@
 				<div class="col-sm-5">
 					<%
 					try {
-						String url = "jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway";
+						String url = DBConnection;
 						Class.forName("com.mysql.cj.jdbc.Driver");
-						Connection con = DriverManager.getConnection(url, "root","LK0nTR9wwyRwBq6qflc0");
+						Connection con = DriverManager.getConnection(url, DBUser,DBPass);
 						Statement stmt = con.createStatement();
 						ResultSet rs = stmt.executeQuery("select * from products order by id desc");
 					%>

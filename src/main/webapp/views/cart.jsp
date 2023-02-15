@@ -38,9 +38,9 @@
 <%@include file="common/header.jspf"%>
 <%
     try {
-        String url = "jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway";
+        String url = DBConnection;
         Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection con = DriverManager.getConnection(url, "root","LK0nTR9wwyRwBq6qflc0");
+        Connection con = DriverManager.getConnection(url, DBUser,DBPass);
         Statement stmt = con.createStatement();
         Statement stmt2 = con.createStatement();
         ResultSet rs = stmt.executeQuery(" select * from products join cart on products.id = cart.productId join categories c on c.category_id = products.category_id where cart.userId =" + request.getAttribute("userid"));
@@ -88,7 +88,7 @@
                             <div class="next">+</div>
                             <input type="number" name="cartNumber" class="cartNumber" value="<%= rs.getInt(13)%>" min="0" step="10">
                             <br><br>
-                            <h3><%= rs.getInt(3) * rs.getInt(13)%>0 Birr</h3>
+                            <h3><%= (float) rs.getInt(3) * rs.getInt(13)%> Birr</h3>
                         </td>
                     </tr>
                     <%}%>

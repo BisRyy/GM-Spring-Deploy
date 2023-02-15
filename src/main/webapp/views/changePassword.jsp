@@ -131,7 +131,7 @@
         </div> <!-- Footer Widget -->
         <div class="footer-bar">
             <div class="copyright-text">
-                <p>Copyright 2021 - All Rights Reserved</p>
+                <p>Copyright 2023 - All Rights Reserved</p>
             </div>
             <div class="payment-mode">
                 <img src="../views/img/icons/paper_money.png">

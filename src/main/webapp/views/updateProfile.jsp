@@ -14,106 +14,7 @@
 </head>
 <body>
 
-<header>
-    <div class="container">
-        <div class="brand">
-            <div class="logo">
-                <a href="/home">
-                    <img src="../views/img/icons/online_shopping.png">
-                    <div class="logo-text">
-                        <p class="big-logo">Grain Mill</p>
-                        <p class="small-logo">market&delivery </p>
-                    </div>
-                </a>
-            </div> <!-- logo -->
-            <div class="shop-icon">
-                <div class="dropdown">
-                    <img src="../views/img/icons/account.png">
-                    <div class="dropdown-menu">
-                        <ul>
-                            <li><a href="/account">My Account</a></li>
-                            <li><a href="/orders">My Orders</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="dropdown">
-                    <img src="../views/img/icons/heart.png">
-                    <div class="dropdown-menu wishlist-item">
-                        <table border="1">
-                            <thead>
-                            <tr>
-                                <th>Image</th>
-                                <th>Product Name</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td><img src="../views/img/product/img1.jpg"></td>
-                                <td>product name</td>
-                            </tr>
-                            <tr>
-                                <td><img src="../views/img/product/img2.jpg"></td>
-                                <td>product name</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="dropdown">
-                    <img src="../views/img/icons/shopping_cart.png">
-                    <div class="dropdown-menu cart-item">
-                        <table border="1">
-                            <thead>
-                            <tr>
-                                <th>Image</th>
-                                <th>Product Name</th>
-                                <th class="center">Price</th>
-                                <th class="center">Qty.</th>
-                                <th class="center">Amount</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td><img src="../views/img/product/img1.jpg" alt=""></td>
-                                <td>product name</td>
-                                <td class="center">1200</td>
-                                <td class="center">2</td>
-                                <td class="center">2400</td>
-                            </tr>
-                            <tr>
-                                <td><img src="../views/img/product/img2.jpg" alt=""></td>
-                                <td>product name</td>
-                                <td class="center">1500</td>
-                                <td class="center">2</td>
-                                <td class="center">3000</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div> <!-- shop icons -->
-        </div> <!-- brand -->
-
-        <div class="menu-bar">
-            <div class="menu">
-                <ul>
-                    <li><a href="home">Home</a></li>
-                    <li><a href="/shop">Shop</a></li>
-                    <li><a href="/about">About</a></li>
-                    <li><a href="/contact">Contact</a></li>
-                </ul>
-            </div>
-            <div class="search-bar">
-                <form>
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="search" placeholder="Search">
-                        <img src="../views/img/icons/search.png">
-                    </div>
-                </form>
-            </div>
-        </div> <!-- menu -->
-    </div> <!-- container -->
-</header> <!-- header -->
+<%@include file="common/header.jspf"%>
 
 <div class="container">
     <main>
@@ -274,7 +175,7 @@
         </div> <!-- Footer Widget -->
         <div class="footer-bar">
             <div class="copyright-text">
-                <p>Copyright 2021 - All Rights Reserved</p>
+                <p>Copyright 2023 - All Rights Reserved</p>
             </div>
             <div class="payment-mode">
                 <img src="../views/img/icons/paper_money.png">

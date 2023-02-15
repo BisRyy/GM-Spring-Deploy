@@ -3,45 +3,18 @@
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="java.sql.DriverManager" %>
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<%--    --%>
-<%--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"--%>
-<%--          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">--%>
-<%--    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"--%>
-<%--          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">--%>
-<%--    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>--%>
-<%--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>--%>
-<%--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>--%>
-<%--    --%>
     <title>GM - Home</title>
-
     <link rel="stylesheet" type="text/css" href="../views/css/style.css" />
-
     <script type="text/javascript" src="../views/js/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
     <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-    <script>
-        $(document).ready(function(){
-            $('.slider').bxSlider({
-                auto: true,
-                autoControls: true,
-                stopAutoOnClick: true,
-                pager: true
-            });
-        });
-    </script>
-
 </head>
 <body>
-
 
 <%@include file="common/header.jspf"%>
 
@@ -83,9 +56,9 @@
             <div class="product-content">
             <%
                 try {
-                    String url = "jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway";
+                    String url = DBConnection;
                     Class.forName("com.mysql.cj.jdbc.Driver");
-                    Connection con = DriverManager.getConnection(url, "root","LK0nTR9wwyRwBq6qflc0");
+                    Connection con = DriverManager.getConnection(url, DBUser,DBPass);
                     Statement stmt = con.createStatement();
                     Statement stmt2 = con.createStatement();
                     ResultSet rs = stmt.executeQuery("select * from products join categories c on c.category_id = products.category_id");
@@ -123,10 +96,10 @@
                 %>
 
         <div class="collection">
-            <div class="men-collection">
+            <div class="grain-collection">
                 <h2>Grain Collection</h2>
             </div>
-            <div class="women-collection">
+            <div class="rice-collection">
                 <h2>Rice Collection</h2>
             </div>
         </div> <!-- Collection Section -->
@@ -138,5 +111,15 @@
 
 <%@include file="common/footer.jspf"%>
 
+<script>
+    $(document).ready(function(){
+        $('.slider').bxSlider({
+            auto: true,
+            autoControls: true,
+            stopAutoOnClick: true,
+            pager: true
+        });
+    });
+</script>
 </body>
 </html>

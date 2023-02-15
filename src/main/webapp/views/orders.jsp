@@ -1,4 +1,6 @@
+<%@ page import="com.jtspringproject.JtSpringProject.controller.AdminController" %>
 <%@ page import="java.sql.*" %>
+<%@ page import="static com.jtspringproject.JtSpringProject.controller.AdminController.*" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,15 +43,15 @@
                         <th>Amount</th>
                         <th>Payment Mode</th>
                         <th>Status</th>
-                        <th>View</th>
-                        <th>Delete</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                     </thead>
                     <%
                         try {
-                            String url = "jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway";
+                            String url = DBConnection;
                             Class.forName("com.mysql.cj.jdbc.Driver");
-                            Connection con = DriverManager.getConnection(url, "root","LK0nTR9wwyRwBq6qflc0");
+                            Connection con = DriverManager.getConnection(url, DBUser,DBPass);
                             Statement stmt = con.createStatement();
                             ResultSet rs = stmt.executeQuery("select id, date , price, status, pmode, username from `order` join users on order.userId = users.user_id ");
                     %>
@@ -70,13 +72,15 @@
                         <%}%>
 
                         <% if(rs.getInt(4) == 0){%>
-                        <td>pending</td>
+                        <td>Pending...</td>
+                        <%}else if(rs.getInt(4)== 2){%>
+                        <td>Canceled</td>
                         <%}else{%>
-                        <td>delivered</td>
+                        <td>Delivered</td>
                         <%}%>
 
-                        <td><a href="#">View</a></td>
-                        <td><a href="#">Delete</a></td>
+                        <td><a href="orders/update?type=1&oid=<%= rs.getInt(1) %>">Complete</a></td>
+                        <td><a href="orders/update?type=2&oid=<%= rs.getInt(1) %>" >Cancel</a></td>
                     </tr>
                     <%}%>
                     </tbody>

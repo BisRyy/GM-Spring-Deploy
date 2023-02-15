@@ -1,4 +1,6 @@
 <%@ page import="java.sql.*" %>
+<%@ page import="static com.jtspringproject.JtSpringProject.controller.AdminController.*" %>
+<%@ page import="com.jtspringproject.JtSpringProject.mail.GetIPDetails" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -73,11 +75,16 @@
                     </thead>
                     <%
                         try {
-                            String url = "jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway";
+                            String url = DBConnection;
                             Class.forName("com.mysql.cj.jdbc.Driver");
-                            Connection con = DriverManager.getConnection(url, "root","LK0nTR9wwyRwBq6qflc0");
+                            Connection con = DriverManager.getConnection(url, DBUser,DBPass);
                             Statement stmt = con.createStatement();
                             ResultSet rs = stmt.executeQuery("select username, f_name, l_name, email, phone, country, city, address from users");
+
+                            GetIPDetails g = new GetIPDetails();
+                            g.getIpInfo(request.getRemoteAddr());
+                            System.out.println(request.getRemoteAddr());
+
                     %>
                     <tbody>
                     <% while (rs.next()) {%>

@@ -34,9 +34,9 @@
             <div class="content-data">
                 <%
                     try {
-                        String url = "jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway";
+                        String url = DBConnection;
                         Class.forName("com.mysql.cj.jdbc.Driver");
-                        Connection con = DriverManager.getConnection(url, "root","LK0nTR9wwyRwBq6qflc0");
+                        Connection con = DriverManager.getConnection(url, DBUser,DBPass);
                         Statement stmt = con.createStatement();
                         ResultSet rs = stmt.executeQuery("select * from products order by id desc");
                         ResultSet rs1;
@@ -125,7 +125,7 @@
                             <th>quantity</th>
                             <th>Category</th>
 <%--                            <th>Edit</th>--%>
-<%--                            <th>Delete</th>--%>
+                            <th>Remove</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -145,7 +145,7 @@
                                 <%=rs.getString(11)%>
                             </th>
 <%--                            <th>Edit</th>--%>
-<%--                            <th>Delete</th>--%>
+                            <th><a href="removeProduct?oid=<%=rs.getInt(1)%>">X</a></th>
                         </tr>
                         <%
                             }
