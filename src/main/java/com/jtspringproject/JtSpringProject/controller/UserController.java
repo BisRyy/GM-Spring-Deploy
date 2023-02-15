@@ -22,9 +22,9 @@ import static com.jtspringproject.JtSpringProject.controller.AdminController.cur
 public class UserController {
 //	Buyer currentUser = new Buyer();
 
-	private final String DBConnection = "jdbc:mysql://localhost:3306/grainmill"; // "jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway";
-	private final String DBPass = "password"; // LK0nTR9wwyRwBq6qflc0;
-	private final String DBUser = "bisry"; // "root";
+	public static String DBConnection = /* "jdbc:mysql://localhost:3306/grainmill"; */ "jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway";
+	public static String DBPass = /* "password"; */ "LK0nTR9wwyRwBq6qflc0";
+	public static String DBUser = /* "bisry"; */ "root";
 
 	@RequestMapping(value = "newuserregister", method = RequestMethod.POST)
 	public String newUseRegister(@RequestParam("username") String username,
