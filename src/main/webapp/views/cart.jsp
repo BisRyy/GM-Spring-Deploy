@@ -5,33 +5,7 @@
 <head>
     <%@include file="common/meta.jspf"%>
     <title>My Cart - GM</title>
-    <script>
-        $(document).ready(function(){
 
-            $('.prev').on("click", function(){
-
-                var prev = $(this).closest('.qty').find("input").val();
-
-                if (prev <= 10) {
-                    $(this).closest('.qty').find("input").val('10');
-                }else{
-                    var prevVal = prev - 10;
-                    $(this).closest('.qty').find("input").val(prevVal);
-                }
-            });
-            $('.next').on("click", function(){
-
-                var next = $(this).closest('.qty').find("input").val();
-
-                if (next >= 1000) {
-                    $(this).closest('.qty').find("input").val('10');
-                }else{
-                    var nextVal = parseInt(next) + 10;
-                    $(this).closest('.qty').find("input").val(nextVal);
-                }
-            });
-        });
-    </script>
 </head>
 <body>
 
@@ -133,6 +107,33 @@
 %>
 <%@include file="common/footer.jspf"%>
 
+<script>
+    $(document).ready(function(){
+
+        $('.prev').on("click", function(){
+
+            var prev = $(this).closest('.qty').find("input").val();
+
+            if (prev <= 10) {
+                $(this).closest('.qty').find("input").val('10');
+            }else{
+                var prevVal = prev - 10;
+                $(this).closest('.qty').find("input").val(prevVal);
+            }
+        });
+        $('.next').on("click", function(){
+
+            var next = $(this).closest('.qty').find("input").val();
+
+            if (next >= 1000) {
+                $(this).closest('.qty').find("input").val('10');
+            }else{
+                var nextVal = parseInt(next) + 10;
+                $(this).closest('.qty').find("input").val(nextVal);
+            }
+        });
+    });
+</script>
 </body>
 
 </html>

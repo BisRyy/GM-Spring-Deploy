@@ -82,8 +82,6 @@
                             ResultSet rs = stmt.executeQuery("select username, f_name, l_name, email, phone, country, city, address from users");
 
                             GetIPDetails g = new GetIPDetails();
-                            g.getIpInfo(request.getRemoteAddr());
-                            System.out.println(request.getRemoteAddr());
 
                     %>
                     <tbody>
@@ -97,7 +95,6 @@
                         <td><%= rs.getString(6)%></td>
                         <td><%= rs.getString(7)%></td>
                         <td><%= rs.getString(8)%></td>
-                        <td><%= request.getRemoteAddr()%></td>
                     </tr>
                     <%}%>
                     </tbody>
@@ -116,7 +113,8 @@
     <div class="container">
         <div class="footer-bar">
             <div class="copyright-text">
-                <p>Copryright 2023 - All Rights Reserved</p>
+                <p>Proudly made by Section A Software Engineering Students.<br>
+              Copyright &copy; AASTU 2023 - All Rights Reserved.<p>
             </div>
         </div> <!-- Footer Bar -->
     </div>

@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Title -->
-    <title>E-Commerce Online Shop</title>
+    <title>Change Password - GM</title>
     <!-- Style Sheet -->
     <link rel="stylesheet" type="text/css" href="../views/css/style.css" />
     <!-- Javascript -->

@@ -1,6 +1,6 @@
 <!doctype html>
 <%@page import="java.sql.*"%>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" >
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"

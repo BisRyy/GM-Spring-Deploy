@@ -100,7 +100,8 @@
     <div class="container">
         <div class="footer-bar">
             <div class="copyright-text">
-                <p>Copryright 2023 - All Rights Reserved</p>
+                <p>Proudly made by Section A Software Engineering Students.<br>
+              Copyright &copy; AASTU 2023 - All Rights Reserved.<p>
             </div>
         </div> <!-- Footer Bar -->
     </div>

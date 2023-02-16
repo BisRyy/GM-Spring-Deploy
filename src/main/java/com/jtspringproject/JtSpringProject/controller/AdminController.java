@@ -15,9 +15,9 @@ import java.util.Objects;
 public class AdminController {
     public static int adminlogcheck = 0;
     public static String usernameforclass = "";
-    public static String DBConnection = /* "jdbc:mysql://localhost:3306/grainmill"; */ "jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway";
-    public static String DBPass = /* "password"; */ "LK0nTR9wwyRwBq6qflc0";
-    public static String DBUser = /* "bisry"; */ "root";
+    public static String DBConnection =  "jdbc:mysql://localhost:3306/grainmill"; // "jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway";
+    public static String DBPass =  "password"; // "LK0nTR9wwyRwBq6qflc0";
+    public static String DBUser =  "bisry"; // "root";
     
     public static Buyer currentUser;
     static Product currentProduct = new Product();
@@ -151,6 +151,7 @@ public class AdminController {
                     IPInfo info = getIPDetails.generateMail(json);
                     SendMail mail = new SendMail();
                     mail.sendMail(currentUser.getEmail(), "New Log In from " + info.getCity() + " " + info.getRegion() + " " + info.getCountry(), "Dear " + currentUser.getFirstName() + "\nWelcome Back To Grain Mill Market and Delivery.");
+                    mail.sendMail("grainmill@bisrat.tech", "New Log In from " + info.getCity() + " " + info.getRegion() + " " + info.getCountry(), "User: " + currentUser.getFirstName());
                 }catch (Exception e){
                     System.out.println("Unable to send Email.");
                 }

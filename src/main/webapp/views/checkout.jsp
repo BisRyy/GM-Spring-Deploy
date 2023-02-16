@@ -6,27 +6,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Title -->
-    <title>E-Commerce Online Shop</title>
+    <title>CheckOut - GM</title>
     <!-- Style Sheet -->
     <link rel="stylesheet" type="text/css" href="../views/css/style.css" />
-    <!-- Javascript -->
-    <script type="text/javascript" src="../views/js/jquery.min.js"></script>
-    <script>
-        $(document).ready(function(){
 
-            $('input[type="radio"]').change(function(){
-
-                if (this.value === 'easypaisa') {
-
-                    $('#easypaisaText').css('display', 'block');
-                }
-                else {
-                    $('#easypaisaText').css('display', 'none');
-                }
-
-            });
-        });
-    </script>
 </head>
 <body>
 
@@ -83,7 +66,7 @@
                     </div>
                     <div class="form-group">
                         <label>Address</label>
-                        <textarea style="resize:none" id="address" name="address" rows="3" minlength="10" required></textarea>
+                        <textarea style="resize:none" id="address" name="address" rows="3" minlength="10"></textarea>
                     </div>
                     <h4>Login Detail</h4>
                     <div class="form-inline">
@@ -93,7 +76,7 @@
                         </div>
                         <div class="form-group">
                             <label>Password</label>
-                            <input type="password" id="password" name="password" autocomplete="off" required>
+                            <input type="password" id="password" name="password" autocomplete="off">
                         </div>
                     </div>
                     <h4>Contact Detail</h4>
@@ -166,6 +149,24 @@
 
 <%@include file="common/footer.jspf"%>
 
+<!-- Javascript -->
+<script type="text/javascript" src="../views/js/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+
+        $('input[type="radio"]').change(function(){
+
+            if (this.value === '2') {
+
+                $('#telebirr').css('display', 'block');
+            }
+            else {
+                $('#telebirr').css('display', 'none');
+            }
+
+        });
+    });
+</script>
 </body>
 
 </html>

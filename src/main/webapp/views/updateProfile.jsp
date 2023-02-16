@@ -175,7 +175,8 @@
         </div> <!-- Footer Widget -->
         <div class="footer-bar">
             <div class="copyright-text">
-                <p>Copyright 2023 - All Rights Reserved</p>
+                <p>Proudly made by Section A Software Engineering Students.<br>
+                    Copyright &copy; AASTU 2023 - All Rights Reserved.<p>
             </div>
             <div class="payment-mode">
                 <img src="../views/img/icons/paper_money.png">

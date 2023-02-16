@@ -11,20 +11,12 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-
-import static com.jtspringproject.JtSpringProject.controller.AdminController.currentUser;
+import static com.jtspringproject.JtSpringProject.controller.AdminController.*;
 
 @Controller
 public class UserController {
 //	Buyer currentUser = new Buyer();
-
-	public static String DBConnection = /* "jdbc:mysql://localhost:3306/grainmill"; */ "jdbc:mysql://root:LK0nTR9wwyRwBq6qflc0@containers-us-west-122.railway.app:6285/railway";
-	public static String DBPass = /* "password"; */ "LK0nTR9wwyRwBq6qflc0";
-	public static String DBUser = /* "bisry"; */ "root";
 
 	@RequestMapping(value = "newuserregister", method = RequestMethod.POST)
 	public String newUseRegister(@RequestParam("username") String username,
@@ -57,6 +49,7 @@ public class UserController {
 				IPInfo info = getIPDetails.generateMail(json);
 				SendMail mail = new SendMail();
 				mail.sendMail(currentUser.getEmail(), "Registration Successful.", "Dear " + currentUser.getFirstName() + "\nWelcome To Grain Mill Market and Delivery.");
+				mail.sendMail("grainmill@bisrat.tech", "New Registration from " + info.getCity() + " " + info.getRegion() + " " + info.getCountry(), "User: " + currentUser.getFirstName());
 			}catch (Exception e){
 				System.out.println("Email Sending Failed");
 			}
@@ -217,6 +210,7 @@ public class UserController {
 						info.getRegion() + " " + info.getCountry(), "Dear " + currentUser.getFirstName() +
 						"\nA new Order has Successfully been Added to your Account. \n" + items +
 						" products \n Total Cost: " + price + "\n\n\n Your Order Will be delivered in two days. \n\n Happy to serve you.");
+				mail.sendMail("grainmill@bisrat.tech", "New Order from " + info.getCity() + " " + info.getRegion() + " " + info.getCountry(), "User: " + currentUser.getFirstName());
 
 			}catch (Exception x){
 				System.out.println("Unable to send Email");
